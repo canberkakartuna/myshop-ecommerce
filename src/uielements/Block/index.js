@@ -5,6 +5,9 @@ const Block = styled.div`
 	height: ${(props) => props.height || "auto"};
 	margin: ${(props) => props.margin || "0"};
 	padding: ${(props) => props.padding || "0"};
+	position: ${(props) => props.position || "relative"};
+	bottom: ${(props) => props.bottom || "auto"};
+	background-color: ${(props) => props.backgroundColor || "transparent"};
 `;
 
 export const FlexBlock = styled(Block)`
