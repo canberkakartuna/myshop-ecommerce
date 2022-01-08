@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./src/",
+		"target": "ES6",
+		"module": "commonjs",
+		"paths": {
+			"@assets": ["./assets/*"],
+			"@components/*": ["./components/*"],
+			"@containers/*": ["./containers/*"],
+			"@mocks/*": ["./mocks/*"],
+			"@uielements/*": ["./uielements/*"],
+			"@redux/*": ["./redux/*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
+}
