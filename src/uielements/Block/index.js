@@ -14,8 +14,8 @@ const Block = styled.div`
 export const FlexBlock = styled(Block)`
 	display: flex;
 	flex-direction: ${(props) => props.flexDirection || "row"};
-	justify-content: ${(props) => props.justifyContent || "flex-start"};
-	align-items: ${(props) => props.alignItems || "flex-start"};
+	justify-content: ${(props) => props.justifyContent || "space-between"};
+	align-items: ${(props) => props.alignItems || "center"};
 	flex-wrap: ${(props) => props.flexWrap || "nowrap"};
 `;
 

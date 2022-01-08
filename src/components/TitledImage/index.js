@@ -4,7 +4,13 @@ import Block, { FlexBlock } from "uielements/Block";
 import Image from "uielements/Image";
 import Paragraph from "uielements/Paragraph";
 
-export default function TitledImage({ top = false }) {
+export default function TitledImage({
+	top = false,
+	src,
+	alt,
+	title,
+	width = false,
+}) {
 	const blockProps = {
 		position: "absolute",
 		alignItems: "center",
@@ -18,9 +24,9 @@ export default function TitledImage({ top = false }) {
 
 	return (
 		<Block>
-			<Image src="https://picsum.photos/800/500" alt="Image" />
+			<Image src={src} alt={alt} width={width} />
 			<FlexBlock {...blockProps}>
-				<Paragraph textAlign="center">Title</Paragraph>
+				<Paragraph textAlign="center">{title}</Paragraph>
 			</FlexBlock>
 		</Block>
 	);
