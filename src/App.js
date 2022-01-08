@@ -1,17 +1,9 @@
 import "./App.css";
 
-import Block from "uielements/Block";
+import App from "containers/App";
 
-import Navbar from "components/Navbar/";
-import TitledImage from "components/TitledImage";
-
-const App = () => {
-	return (
-		<Block margin="57px 92px">
-			<Navbar />
-			<TitledImage />
-		</Block>
-	);
+const AppContainer = () => {
+	return <App />;
 };
 
-export default App;
+export default AppContainer;

@@ -7,6 +7,7 @@ const Block = styled.div`
 	padding: ${(props) => props.padding || "0"};
 	position: ${(props) => props.position || "relative"};
 	bottom: ${(props) => props.bottom || "auto"};
+	top: ${(props) => props.top || "auto"};
 	background-color: ${(props) => props.backgroundColor || "transparent"};
 `;
 
