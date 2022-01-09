@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import Block, { FlexBlock } from "uielements/Block";
-import H1, { Span } from "uielements/Title";
+import Block from "uielements/Block";
+import H1 from "uielements/Title";
 import Checkbox from "uielements/Checkbox";
 
 import { getAllProducts } from "api/network";

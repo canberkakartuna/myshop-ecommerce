@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import Block, { FlexBlock } from "uielements/Block";
+import Block from "uielements/Block";
 import Grid from "uielements/Grid";
 
 import ImageWithContent from "components/ImageWithContent";
