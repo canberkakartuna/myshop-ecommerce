@@ -14,7 +14,7 @@ const Label = styled.label``;
 const Checkbox = ({ value, onClick = () => {} }) => {
 	return (
 		<FlexBlock justifyContent="flex-start" margin="30px 0">
-			<Check name={value} value={value} onClick={onClick} />
+			<Check name={value} id={value} value={value} onClick={onClick} />
 			<Label htmlFor={value}>{value}</Label>
 		</FlexBlock>
 	);

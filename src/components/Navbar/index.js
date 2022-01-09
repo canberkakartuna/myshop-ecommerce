@@ -11,7 +11,7 @@ const Navbar = () => {
 	return (
 		<>
 			<FlexBlock justifyContent="space-between" alignItems="center">
-				<Image src={Logo} alt="Logo" width="160px" height="25px" />
+				<Image src={Logo} alt="Logo" width="160px" height="26px" />
 				<Image src={BasketIcon} alt="Basket Icon" width="54px" height="54px" />
 			</FlexBlock>
 			<Line width="100%" margin="30px 0 0 0" border="4px solid #E4E4E4" />
