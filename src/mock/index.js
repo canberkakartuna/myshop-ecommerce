@@ -1,5 +1,3 @@
-import Dog from "assets/images/dog.png";
-
 export const products = [
 	{
 		name: "Samurai King Restling",
@@ -7,7 +5,7 @@ export const products = [
 		price: 101,
 		currency: "USD",
 		image: {
-			src: Dog,
+			src: "https://picsum.photos/200/300",
 			alt: "Dog Image",
 		},
 		bestseller: false,
@@ -44,7 +42,7 @@ export const products = [
 		price: 3.89,
 		currency: "USD",
 		image: {
-			src: Dog,
+			src: "",
 			alt: "Dog Image",
 		},
 		bestseller: true,

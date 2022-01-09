@@ -3,6 +3,7 @@ import React from "react";
 import Block, { FlexBlock } from "uielements/Block";
 import Image from "uielements/Image";
 import Paragraph from "uielements/Paragraph";
+import Button from "uielements/Button";
 
 export default function TitledImage({
 	top = false,
@@ -23,11 +24,16 @@ export default function TitledImage({
 	};
 
 	return (
-		<Block>
-			<Image src={src} alt={alt} width={width} />
-			<FlexBlock {...blockProps}>
-				<Paragraph textAlign="center">{title}</Paragraph>
-			</FlexBlock>
-		</Block>
+		<>
+			<Block>
+				<Image src={src} alt={alt} width={width} />
+				{title && (
+					<FlexBlock {...blockProps}>
+						<Paragraph textAlign="center">{title}</Paragraph>
+					</FlexBlock>
+				)}
+			</Block>
+			{top && <Button>Add to Chart</Button>}
+		</>
 	);
 }

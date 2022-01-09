@@ -9,6 +9,7 @@ const Block = styled.div`
 	bottom: ${(props) => props.bottom || "auto"};
 	top: ${(props) => props.top || "auto"};
 	background-color: ${(props) => props.backgroundColor || "transparent"};
+	text-align: ${(props) => props.textAlign || "left"};
 `;
 
 export const FlexBlock = styled(Block)`

@@ -9,7 +9,8 @@
 			"@containers/*": ["./containers/*"],
 			"@mocks/*": ["./mocks/*"],
 			"@uielements/*": ["./uielements/*"],
-			"@redux/*": ["./redux/*"]
+			"@redux/*": ["./redux/*"],
+			"@api/*": ["./api/*"]
 		}
 	},
 	"include": ["src/**/*"],
