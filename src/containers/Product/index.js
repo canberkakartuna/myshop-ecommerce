@@ -7,6 +7,7 @@ import Paragraph from "uielements/Paragraph";
 import Image from "uielements/Image";
 import Line from "uielements/Line";
 
+import SectionTitle from "components/SectionTitle";
 import TitledImage from "components/TitledImage";
 import Filter from "components/Filter";
 
@@ -29,20 +30,22 @@ const Product = () => {
 
 	return (
 		<Block margin="30px 0px">
-			<FlexBlock margin="30px 0px">
-				<H1>{product?.name}</H1>
-				<Button
-					width="257px"
-					height="47px"
-					onClick={() => {
-						console.log("test");
-					}}
-				>
-					<Span fontSize="23px" fontWeight="500">
-						Add to Chart
-					</Span>
-				</Button>
-			</FlexBlock>
+			<SectionTitle
+				title={product?.name}
+				action={
+					<Button
+						width="257px"
+						height="47px"
+						onClick={() => {
+							console.log("test");
+						}}
+					>
+						<Span fontSize="23px" fontWeight="500">
+							Add to Chart
+						</Span>
+					</Button>
+				}
+			/>
 			<TitledImage
 				src={product?.image?.src}
 				alt={product?.image?.alt}
