@@ -8,8 +8,14 @@ import Image from "uielements/Image";
 import Line from "uielements/Line";
 
 import SectionTitle from "components/SectionTitle";
-import TitledImage from "components/TitledImage";
+import ImageWithContent from "components/ImageWithContent";
 import Filter from "components/Filter";
+
+import Select from "uielements/Select";
+
+import SortIcon from "assets/images/Icons/sort.png";
+
+import ProductList from "containers/Product/ProductList";
 
 import { getProductsById } from "api/network";
 
@@ -27,6 +33,25 @@ const Product = () => {
 
 		fetchData();
 	}, []);
+
+	let sectionTitle = (
+		<>
+			Photography / <Span>Premium Photos</Span>
+		</>
+	);
+
+	let action = (
+		<FlexBlock>
+			<FlexBlock justifyContent="flex-start">
+				<Image src={SortIcon} alt="sort" />
+				<Span>Sort By</Span>
+			</FlexBlock>
+			<Select>
+				<option value="Price">Price</option>
+				<option value="Alphabetically">Alphabetically</option>
+			</Select>
+		</FlexBlock>
+	);
 
 	return (
 		<Block margin="30px 0px">
@@ -46,12 +71,14 @@ const Product = () => {
 					</Button>
 				}
 			/>
-			<TitledImage
+
+			<ImageWithContent
 				src={product?.image?.src}
 				alt={product?.image?.alt}
 				width="100%"
 				title="Photo of the day"
 			/>
+
 			<FlexBlock alignItems="normal">
 				<Block width="690px">
 					<H1>About the {product?.name}</H1>
@@ -72,8 +99,16 @@ const Product = () => {
 					))}
 				</Block>
 			</FlexBlock>
+
 			<Line width="100%" margin="30px 0 0 0" border="4px solid #E4E4E4" />
-			<Filter title="Category" />
+
+			<Block>
+				<SectionTitle title={sectionTitle} action={action} />
+				<FlexBlock justifyContent="flex-start" alignItems="flex-start">
+					<Filter title="Category" />
+					<ProductList />
+				</FlexBlock>
+			</Block>
 		</Block>
 	);
 };
