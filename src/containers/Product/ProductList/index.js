@@ -16,7 +16,6 @@ export default function ProductList() {
 		async function fetchProducts() {
 			const products = await getAllProducts();
 			products.forEach((product) => {
-				console.log(product.data());
 				setProducts((products) => [...products, product.data()]);
 			});
 		}
@@ -30,6 +29,8 @@ export default function ProductList() {
 				{products.map((product) => {
 					return (
 						<ImageWithContent
+							title={product.bestseller && "Bestseller"}
+							top={product.bestseller}
 							key={uniqueId()}
 							src={product.image.src}
 							alt={product.image.alt}

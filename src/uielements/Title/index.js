@@ -7,6 +7,7 @@ const H1 = styled.h1`
 `;
 
 export const Subtitle = styled.p`
+	margin: 10px 0;
 	font-weight: bold;
 	font-size: 22px;
 	line-height: 24px;
