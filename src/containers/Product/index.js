@@ -28,7 +28,6 @@ const Product = () => {
 		async function fetchData() {
 			const products = await getProductsById("5");
 			setProduct(products.data());
-			console.log(products.data());
 		}
 
 		fetchData();
@@ -79,24 +78,29 @@ const Product = () => {
 				title="Photo of the day"
 			/>
 
-			<FlexBlock alignItems="normal">
+			<FlexBlock alignItems="normal" margin="50px 0 0 0">
 				<Block width="690px">
 					<H1>About the {product?.name}</H1>
 					<Subtitle>{capitalize(product?.category)}</Subtitle>
 					<Paragraph>{product?.details?.descriptions}</Paragraph>
 				</Block>
-				<Block width="33%" textAlign="right">
+				<Block textAlign="right">
 					<H1>People Also Buy</H1>
-					{product?.details?.recommendations?.map((item, index) => (
-						<Image
-							src={item.src}
-							alt={item.alt}
-							width="117px"
-							height="147px"
-							margin="30px 0 30px 30px"
-							key={uniqueId("i-")}
-						/>
-					))}
+					<Block>
+						{product?.details?.recommendations?.map((item, index) => (
+							<Image
+								src={item.src}
+								alt={item.alt}
+								width="117px"
+								height="147px"
+								margin="30px 0 30px 30px"
+								key={uniqueId("i-")}
+							/>
+						))}
+					</Block>
+					<Subtitle>Details</Subtitle>
+					<Span>Size: 1020 X 1020 pixel</Span> <br />
+					<Span>Size: 15 mb</Span>
 				</Block>
 			</FlexBlock>
 
