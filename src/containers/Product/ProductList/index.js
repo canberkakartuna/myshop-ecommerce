@@ -29,7 +29,6 @@ const ProductList = ({
 			_fetchedProducts.forEach((product) => {
 				fetchedProducts.push(product.data());
 			});
-			console.log(fetchedProducts);
 			setProducts(fetchedProducts);
 		}
 

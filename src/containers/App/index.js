@@ -16,7 +16,6 @@ const App = ({ setAllProductsCount, setFilters }) => {
 		const fetchProductsInfo = async () => {
 			let products = await getAllProducts();
 			let count = products.size;
-			console.log(count);
 
 			let filters = [
 				...new Set(products.docs.map((product) => product.data()?.category)),

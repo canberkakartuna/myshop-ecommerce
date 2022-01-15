@@ -4,7 +4,7 @@ import { FlexBlock } from "uielements/Block/";
 import Image from "uielements/Image/";
 import Line from "uielements/Line/";
 
-import Logo from "assets/images/logo.png";
+import Logo from "assets/images/logo.svg";
 import BasketIcon from "assets/images/Icons/basket.png";
 
 const Navbar = () => {
