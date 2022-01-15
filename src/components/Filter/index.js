@@ -13,31 +13,58 @@ import { uniqueId } from "lodash";
 
 let filterPriceRangeOptions = [
 	{
-		label: "Lower than $20",
+		value: "Lower than $20",
+		checked: false,
+		key: uniqueId("pf-"),
+		query: [[20, "<"]],
 	},
 	{
-		label: "$20 - $100",
+		value: "$20 - $100",
+		checked: false,
+		key: uniqueId("pf-"),
+		query: [
+			[20, ">"],
+			[100, "<"],
+		],
 	},
 	{
-		label: "$100 - $200",
+		value: "$100 - $200",
+		checked: false,
+		key: uniqueId("pf-"),
+		query: [
+			[100, ">"],
+			[200, "<"],
+		],
 	},
 	{
-		label: "More than $200",
+		value: "More than $200",
+		checked: false,
+		key: uniqueId("pf-"),
+		query: [[200, ">"]],
 	},
 ];
 
 const Filter = ({ title = false, filters = [], currentPage, setProducts }) => {
-	const [filterOptions, setFilterOptions] = useState([]);
-	const [filterEl, setFilterEl] = useState([]);
+	const [filterOptions, setFilterOptions] = useState({
+		category: [],
+		price: filterPriceRangeOptions,
+	});
+
+	const [filterEl, setFilterEl] = useState({
+		category: [],
+		price: [],
+	});
 
 	useEffect(() => {
 		let filterOptions = filters.map((filter) => ({
 			value: filter,
-			key: uniqueId("filter-"),
+			key: uniqueId("cf-"),
 			checked: false,
 		}));
-		console.log(filterOptions);
-		setFilterOptions(filterOptions);
+		setFilterOptions((prevState) => ({
+			category: filterOptions,
+			price: prevState.price,
+		}));
 	}, [filters]);
 
 	const filterProduct = async (filterArr) => {
@@ -48,18 +75,20 @@ const Filter = ({ title = false, filters = [], currentPage, setProducts }) => {
 				filteredProducts.push(doc.data());
 			});
 		});
-
+		console.log(filteredProducts);
 		setProducts(filteredProducts);
 	};
 
-	const handleCheckboxClick = (e) => {
+	const handleCheckboxClick = (section) => (e) => {
 		let filters;
-
 		let checked = e.target.checked;
 		let id = e.target.id;
 
-		let targetDataKey = filterOptions.filter((el) => el.value === id)[0]?.key;
-		let options = filterOptions.map((el) => {
+		let optionsArr = filterOptions[section];
+
+		let targetDataKey = optionsArr.filter((el) => el.value === id)[0]?.key;
+
+		let options = optionsArr.map((el) => {
 			if (el.key === targetDataKey) {
 				el.checked = checked;
 			}
@@ -67,14 +96,69 @@ const Filter = ({ title = false, filters = [], currentPage, setProducts }) => {
 			return el;
 		});
 
-		setFilterOptions(options);
+		switch (section) {
+			case "category":
+				setFilterOptions((prevState) => ({
+					category: options,
+					price: prevState.price,
+				}));
 
-		if (checked) {
-			setFilterEl((filterEl) => [...filterEl, id]);
-			filters = [...filterEl, id];
-		} else {
-			setFilterEl((filterEl) => filterEl.filter((el) => el !== id));
-			filters = filterEl.filter((el) => el !== id);
+				if (checked) {
+					setFilterEl((filterEl) => ({
+						category: [...filterEl?.category, id],
+						price: [...filterEl.price],
+					}));
+
+					filters = {
+						category: [...filterEl?.category, id],
+						price: [...filterEl.price],
+					};
+				} else {
+					setFilterEl((filterEl) => ({
+						category: filterEl?.category.filter((el) => el !== id),
+						price: [...filterEl.price],
+					}));
+
+					filters = {
+						category: filterEl?.category.filter((el) => el !== id),
+						price: [...filterEl.price],
+					};
+				}
+				break;
+			case "price":
+				setFilterOptions((prevState) => ({
+					category: prevState.category,
+					price: options,
+				}));
+				// check here
+				let priceOption = filterPriceRangeOptions.filter(
+					(el) => el.value === id
+				)[0];
+
+				if (checked) {
+					setFilterEl((filterEl) => ({
+						category: [...filterEl?.category],
+						price: [...filterEl.price, { ...priceOption }],
+					}));
+
+					filters = {
+						category: [...filterEl?.category],
+						price: [...filterEl.price, { ...priceOption }],
+					};
+				} else {
+					setFilterEl((filterEl) => ({
+						category: [...filterEl.category],
+						price: filterEl?.price.filter((el) => el.value !== id),
+					}));
+
+					filters = {
+						category: [...filterEl.category],
+						price: filterEl?.price.filter((el) => el.value !== id),
+					};
+				}
+				break;
+			default:
+				break;
 		}
 
 		filterProduct(filters);
@@ -84,19 +168,24 @@ const Filter = ({ title = false, filters = [], currentPage, setProducts }) => {
 		<Block width="25%">
 			<Block>
 				{title && <H1>{title}</H1>}
-				{filterOptions?.map((filter) => (
+				{filterOptions?.category?.map((filter) => (
 					<Checkbox
 						key={filter.key}
 						value={filter.value}
 						checked={filter.checked}
-						onChange={handleCheckboxClick}
+						onChange={handleCheckboxClick("category")}
 					/>
 				))}
 			</Block>
 			<Block margin="50px 0 0 0">
 				{<H1>Price range</H1>}
-				{filterPriceRangeOptions?.map((filter) => (
-					<Checkbox value={filter.label} key={uniqueId("pf-")} />
+				{filterOptions?.price?.map((filter) => (
+					<Checkbox
+						value={filter.value}
+						checked={filter.checked}
+						key={filter.key}
+						onChange={handleCheckboxClick("price")}
+					/>
 				))}
 			</Block>
 		</Block>
