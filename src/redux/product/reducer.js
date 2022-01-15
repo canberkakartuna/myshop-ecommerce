@@ -1,8 +1,9 @@
-import { SET_PRODUCT, SET_PRODUCTS } from "./action";
+import { SET_PRODUCT, SET_PRODUCTS, SET_ALL_PRODUCTS_COUNT } from "./action";
 
 const INITIAL_STATE = {
 	product: {},
 	products: [],
+	allProductsCount: 0,
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,8 @@ const productReducer = (state = INITIAL_STATE, action) => {
 			return { ...state, product: action.payload };
 		case SET_PRODUCTS:
 			return { ...state, products: action.payload };
+		case SET_ALL_PRODUCTS_COUNT:
+			return { ...state, allProductsCount: action.payload };
 		default:
 			return state;
 	}

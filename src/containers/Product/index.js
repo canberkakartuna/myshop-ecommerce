@@ -108,7 +108,7 @@ const Product = () => {
 
 			<Block>
 				<SectionTitle title={sectionTitle} action={action} />
-				<FlexBlock justifyContent="flex-start" alignItems="flex-start">
+				<FlexBlock justifyContent="space-between" alignItems="flex-start">
 					<Filter title="Category" />
 					<ProductList />
 				</FlexBlock>

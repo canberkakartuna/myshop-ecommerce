@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 
 import Block from "uielements/Block";
 import Grid from "uielements/Grid";
 
 import ImageWithContent from "components/ImageWithContent";
+import Pagination from "components/Pagination";
 
-import { getAllProducts } from "api/network";
+import { getProductsAfterLastDoc } from "api/network";
 
 import { uniqueId } from "lodash";
 
-export default function ProductList() {
+const ProductList = ({ allProductsCount }) => {
 	const [products, setProducts] = useState([]);
 
-	useEffect(() => {
-		async function fetchProducts() {
-			const products = await getAllProducts();
-			products.forEach((product) => {
-				setProducts((products) => [...products, product.data()]);
-			});
-		}
+	const [pageCount, setPageCount] = useState(0);
+	const [currentPage, setCurrentPage] = useState(1);
 
-		fetchProducts();
-	}, []);
+	useEffect(() => {
+		if (allProductsCount > 0) {
+			fetchProducts(currentPage);
+			setPageCount(Math.ceil(allProductsCount / 6));
+		}
+	}, [allProductsCount, currentPage]);
+
+	async function fetchProducts(page) {
+		setProducts(() => []);
+		const products = await getProductsAfterLastDoc(page);
+		products.forEach((product) => {
+			setProducts((products) => [...products, product.data()]);
+		});
+	}
+
+	if (!products.length) {
+		return <div>Loading...</div>;
+	}
 
 	return (
 		<Block>
 			<Grid>
-				{products.map((product) => {
+				{products?.map((product) => {
 					return (
 						<ImageWithContent
 							title={product.bestseller && "Bestseller"}
@@ -41,6 +54,15 @@ export default function ProductList() {
 					);
 				})}
 			</Grid>
+			<Pagination pageCount={pageCount} setCurrentPage={setCurrentPage} />
 		</Block>
 	);
-}
+};
+
+const mapStateToProps = (state) => {
+	return {
+		allProductsCount: state.product.allProductsCount,
+	};
+};
+
+export default connect(mapStateToProps)(ProductList);
