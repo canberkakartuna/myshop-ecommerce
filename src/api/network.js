@@ -8,18 +8,32 @@ export function getAllProducts() {
 	return api.collection("products").get();
 }
 
-export function getAllProductsCount() {
-	return api
-		.collection("products")
-		.get()
-		.then((snapshot) => snapshot.size);
-}
-
-export function getProductsAfterLastDoc(pageNum) {
+export function getProductsByPageNumber(pageNum) {
 	return api
 		.collection("products")
 		.orderBy("id", "asc")
 		.startAt((pageNum - 1) * 6 + 1)
 		.limit(6)
 		.get();
+}
+
+export function getFilteredProducts(pageNum, filterQuery = []) {
+	const queries = [];
+
+	if (filterQuery.length > 0) {
+		filterQuery.forEach((elem) => {
+			queries.push(
+				api
+					.collection("products")
+					.orderBy("id", "asc")
+					.startAt((pageNum - 1) * 6 + 1)
+					.limit(6)
+					.where("category", "==", elem)
+					.get()
+			);
+		});
+
+		return Promise.all(queries);
+	}
+	return Promise.all([getProductsByPageNumber(pageNum)]);
 }
