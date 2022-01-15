@@ -7,20 +7,27 @@ import Navbar from "components/Navbar";
 
 import Product from "containers/Product";
 
-import { getAllProductsCount } from "api/network";
+import { getAllProducts } from "api/network";
 
-import { setAllProductsCount } from "redux/product/action";
+import { setAllProductsCount, setFilters } from "redux/product/action";
 
-const App = ({ setAllProductsCount }) => {
+const App = ({ setAllProductsCount, setFilters }) => {
 	useEffect(() => {
-		const fetchProductsCount = async () => {
-			let count = await getAllProductsCount();
-			console.log("App: useEffect ", count);
+		const fetchProductsInfo = async () => {
+			let products = await getAllProducts();
+			let count = products.size;
+			console.log(count);
+
+			let filters = [
+				...new Set(products.docs.map((product) => product.data()?.category)),
+			];
+
 			setAllProductsCount(count);
+			setFilters(filters);
 		};
 
-		fetchProductsCount();
-	}, [setAllProductsCount]);
+		fetchProductsInfo();
+	}, [setAllProductsCount, setFilters]);
 
 	return (
 		<Block>
@@ -32,6 +39,7 @@ const App = ({ setAllProductsCount }) => {
 
 const mapDispatchToProps = {
 	setAllProductsCount,
+	setFilters,
 };
 
 export default connect(null, mapDispatchToProps)(App);

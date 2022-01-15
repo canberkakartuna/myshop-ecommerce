@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Block, { FlexBlock } from "uielements/Block";
 import H1, { Span, Subtitle } from "uielements/Title";
@@ -22,7 +22,8 @@ import { getProductsById } from "api/network";
 import { uniqueId, capitalize } from "lodash";
 
 const Product = () => {
-	const [product, setProduct] = React.useState({});
+	const [product, setProduct] = useState({});
+	const [currentPage, setCurrentPage] = useState(1);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -109,8 +110,11 @@ const Product = () => {
 			<Block>
 				<SectionTitle title={sectionTitle} action={action} />
 				<FlexBlock justifyContent="space-between" alignItems="flex-start">
-					<Filter title="Category" />
-					<ProductList />
+					<Filter title="Category" currentPage={currentPage} />
+					<ProductList
+						setCurrentPage={setCurrentPage}
+						currentPage={currentPage}
+					/>
 				</FlexBlock>
 			</Block>
 		</Block>

@@ -11,10 +11,16 @@ const Check = styled.input.attrs({ type: "checkbox" })`
 `;
 const Label = styled.label``;
 
-const Checkbox = ({ value, onClick = () => {} }) => {
+const Checkbox = ({ value, checked, onChange = () => {} }) => {
 	return (
 		<FlexBlock justifyContent="flex-start" margin="30px 0">
-			<Check name={value} id={value} value={value} onClick={onClick} />
+			<Check
+				name={value}
+				id={value}
+				value={value}
+				onChange={onChange}
+				checked={checked}
+			/>
 			<Label htmlFor={value}>{value}</Label>
 		</FlexBlock>
 	);

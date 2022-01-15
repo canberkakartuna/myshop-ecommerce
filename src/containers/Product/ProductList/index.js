@@ -7,30 +7,37 @@ import Grid from "uielements/Grid";
 import ImageWithContent from "components/ImageWithContent";
 import Pagination from "components/Pagination";
 
-import { getProductsAfterLastDoc } from "api/network";
+import { getProductsByPageNumber } from "api/network";
+
+import { setProducts } from "redux/product/action";
 
 import { uniqueId } from "lodash";
 
-const ProductList = ({ allProductsCount }) => {
-	const [products, setProducts] = useState([]);
-
+const ProductList = ({
+	setProducts,
+	products,
+	allProductsCount,
+	setCurrentPage,
+	currentPage,
+}) => {
 	const [pageCount, setPageCount] = useState(0);
-	const [currentPage, setCurrentPage] = useState(1);
 
 	useEffect(() => {
+		async function fetchProducts(page) {
+			let fetchedProducts = [];
+			const _fetchedProducts = await getProductsByPageNumber(page);
+			_fetchedProducts.forEach((product) => {
+				fetchedProducts.push(product.data());
+			});
+			console.log(fetchedProducts);
+			setProducts(fetchedProducts);
+		}
+
 		if (allProductsCount > 0) {
 			fetchProducts(currentPage);
 			setPageCount(Math.ceil(allProductsCount / 6));
 		}
-	}, [allProductsCount, currentPage]);
-
-	async function fetchProducts(page) {
-		setProducts(() => []);
-		const products = await getProductsAfterLastDoc(page);
-		products.forEach((product) => {
-			setProducts((products) => [...products, product.data()]);
-		});
-	}
+	}, [allProductsCount, currentPage, setProducts]);
 
 	if (!products.length) {
 		return <div>Loading...</div>;
@@ -39,7 +46,7 @@ const ProductList = ({ allProductsCount }) => {
 	return (
 		<Block>
 			<Grid>
-				{products?.map((product) => {
+				{(products || [])?.map((product) => {
 					return (
 						<ImageWithContent
 							title={product.bestseller && "Bestseller"}
@@ -62,7 +69,12 @@ const ProductList = ({ allProductsCount }) => {
 const mapStateToProps = (state) => {
 	return {
 		allProductsCount: state.product.allProductsCount,
+		products: state.product.products,
 	};
 };
 
-export default connect(mapStateToProps)(ProductList);
+const mapDispatchToProps = {
+	setProducts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
