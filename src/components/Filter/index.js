@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import Block from "uielements/Block";
 import H1 from "uielements/Title";
-import Checkbox from "uielements/Checkbox";
+import { Checkbox, RadioButton } from "uielements/Inputs";
 
 import { getFilteredProducts } from "api/network";
 
@@ -24,7 +24,7 @@ let filterPriceRangeOptions = [
 		key: uniqueId("pf-"),
 		query: [
 			[20, ">"],
-			[100, "<"],
+			[100, "<="],
 		],
 	},
 	{
@@ -33,7 +33,7 @@ let filterPriceRangeOptions = [
 		key: uniqueId("pf-"),
 		query: [
 			[100, ">"],
-			[200, "<"],
+			[200, "<="],
 		],
 	},
 	{
@@ -125,37 +125,49 @@ const Filter = ({ title = false, filters = [], currentPage, setProducts }) => {
 					};
 				}
 				break;
+			default:
+				break;
+		}
+
+		console.log(filters);
+		filterProduct(filters);
+	};
+
+	const handleRadioClick = (section) => (e) => {
+		let filters;
+		let id = e.target.id;
+		let checked = e.target.checked;
+
+		let targetDataKey = filterOptions[section].filter(
+			(el) => el.value === id
+		)[0]?.key;
+
+		let options = filterOptions[section].map((el) => {
+			if (el.key === targetDataKey) {
+				el.checked = checked;
+			} else {
+				el.checked = false;
+			}
+
+			return el;
+		});
+
+		switch (section) {
 			case "price":
-				setFilterOptions((prevState) => ({
-					category: prevState.category,
+				setFilterOptions((filterOptions) => ({
+					category: filterOptions.category,
 					price: options,
 				}));
-				// check here
-				let priceOption = filterPriceRangeOptions.filter(
-					(el) => el.value === id
-				)[0];
 
-				if (checked) {
-					setFilterEl((filterEl) => ({
-						category: [...filterEl?.category],
-						price: [...filterEl.price, { ...priceOption }],
-					}));
+				setFilterEl((filterEl) => ({
+					category: filterEl?.category,
+					price: filterPriceRangeOptions.filter((el) => el.value === id),
+				}));
 
-					filters = {
-						category: [...filterEl?.category],
-						price: [...filterEl.price, { ...priceOption }],
-					};
-				} else {
-					setFilterEl((filterEl) => ({
-						category: [...filterEl.category],
-						price: filterEl?.price.filter((el) => el.value !== id),
-					}));
-
-					filters = {
-						category: [...filterEl.category],
-						price: filterEl?.price.filter((el) => el.value !== id),
-					};
-				}
+				filters = {
+					category: filterEl?.category,
+					price: filterPriceRangeOptions.filter((el) => el.value === id),
+				};
 				break;
 			default:
 				break;
@@ -180,11 +192,12 @@ const Filter = ({ title = false, filters = [], currentPage, setProducts }) => {
 			<Block margin="50px 0 0 0">
 				{<H1>Price range</H1>}
 				{filterOptions?.price?.map((filter) => (
-					<Checkbox
+					<RadioButton
+						name="price"
 						value={filter.value}
 						checked={filter.checked}
 						key={filter.key}
-						onChange={handleCheckboxClick("price")}
+						onChange={handleRadioClick("price")}
 					/>
 				))}
 			</Block>
