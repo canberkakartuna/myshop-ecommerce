@@ -24,7 +24,7 @@ let filterPriceRangeOptions = [
 		key: uniqueId("pf-"),
 		query: [
 			[20, ">"],
-			[100, "<"],
+			[100, "<="],
 		],
 	},
 	{
@@ -33,7 +33,7 @@ let filterPriceRangeOptions = [
 		key: uniqueId("pf-"),
 		query: [
 			[100, ">"],
-			[200, "<"],
+			[200, "<="],
 		],
 	},
 	{
