@@ -18,51 +18,80 @@ export function getProductsByPageNumber(pageNum) {
 }
 
 export function getFilteredProducts(pageNum, filterQuery = {}) {
-	const queries = [];
+	if (filterQuery.category.length === 0 && filterQuery.price.length === 0) {
+		return Promise.all([getProductsByPageNumber(pageNum)]);
+	}
 
-	if (filterQuery?.category?.length > 0 || filterQuery?.price?.length > 0) {
-		if (filterQuery?.category?.length > 0) {
-			filterQuery?.category?.forEach((elem) => {
+	let queries = [];
+
+	const priceFilter = filterQuery?.price?.[0]?.query || [];
+	const categoryFilter = filterQuery?.category;
+
+	if (priceFilter.length > 0 && categoryFilter.length > 0) {
+		if (priceFilter.length === 2) {
+			categoryFilter.forEach((category) => {
 				queries.push(
 					api
 						.collection("products")
-						.orderBy("id", "asc")
+						.orderBy("price", "asc")
 						.startAt((pageNum - 1) * 6 + 1)
 						.limit(6)
-						.where("category", "==", elem)
+						.where("category", "==", category)
+						.where("price", priceFilter[0][1], priceFilter[0][0])
+						.where("price", priceFilter[1][1], priceFilter[1][0])
+						.get()
+				);
+			});
+		} else if (priceFilter.length === 1) {
+			categoryFilter.forEach((category) => {
+				queries.push(
+					api
+						.collection("products")
+						.orderBy("price", "asc")
+						.startAt((pageNum - 1) * 6 + 1)
+						.limit(6)
+						.where("category", "==", category)
+						.where("price", priceFilter[0][1], priceFilter[0][0])
 						.get()
 				);
 			});
 		}
-
-		if (filterQuery?.price?.length > 0) {
-			filterQuery?.price?.forEach((elem) => {
-				if (elem.query.length > 1) {
-					queries.push(
-						api
-							.collection("products")
-							.orderBy("price", "asc")
-							.startAt((pageNum - 1) * 6 + 1)
-							.limit(6)
-							.where("price", elem.query[0][1], elem.query[0][0])
-							.where("price", elem.query[1][1], elem.query[1][0])
-							.get()
-					);
-				} else {
-					queries.push(
-						api
-							.collection("products")
-							.orderBy("price", "asc")
-							.startAt((pageNum - 1) * 6 + 1)
-							.limit(6)
-							.where("price", elem.query[0][1], elem.query[0][0])
-							.get()
-					);
-				}
-			});
+	} else if (priceFilter.length > 0) {
+		if (priceFilter.length === 1) {
+			queries.push(
+				api
+					.collection("products")
+					.orderBy("price", "asc")
+					.startAt((pageNum - 1) * 6 + 1)
+					.limit(6)
+					.where("price", priceFilter[0][1], priceFilter[0][0])
+					.get()
+			);
+		} else if (priceFilter.length === 2) {
+			queries.push(
+				api
+					.collection("products")
+					.orderBy("price", "asc")
+					.startAt((pageNum - 1) * 6 + 1)
+					.limit(6)
+					.where("price", priceFilter[0][1], priceFilter[0][0])
+					.where("price", priceFilter[1][1], priceFilter[1][0])
+					.get()
+			);
 		}
-		console.log(queries);
-		return Promise.all(queries);
+	} else if (categoryFilter.length > 0) {
+		categoryFilter.forEach((category) => {
+			queries.push(
+				api
+					.collection("products")
+					.orderBy("id", "asc")
+					.startAt((pageNum - 1) * 6 + 1)
+					.limit(6)
+					.where("category", "==", category)
+					.get()
+			);
+		});
 	}
-	return Promise.all([getProductsByPageNumber(pageNum)]);
+
+	return Promise.all(queries);
 }

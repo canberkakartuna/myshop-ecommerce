@@ -11,7 +11,7 @@ import SectionTitle from "components/SectionTitle";
 import ImageWithContent from "components/ImageWithContent";
 import Filter from "components/Filter";
 
-import Select from "uielements/Select";
+import { Select } from "uielements/Inputs";
 
 import SortIcon from "assets/images/Icons/sort.png";
 
